@@ -24,8 +24,7 @@ export const query = graphql`
       body {
         raw
         references {
-          file {
-            url
+          fluid {
           }
         }
       }
