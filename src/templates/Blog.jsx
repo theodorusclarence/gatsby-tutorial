@@ -3,6 +3,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import Head from "../components/head";
+import Img from "gatsby-image";
 
 // export const query = graphql`
 //   query($slug: String!) {
@@ -25,6 +26,7 @@ export const query = graphql`
         raw
         references {
           fluid {
+            ...GatsbyContentfulFluid
           }
         }
       }
@@ -45,9 +47,7 @@ const Blog = props => {
         console.log(props.data.contentfulBlogPost.body.references[i]);
         i++;
         return (
-          <img
-            src={props.data.contentfulBlogPost.body.references[i].file.url}
-          />
+          <Img fluid={props.data.contentfulBlogPost.body.references[i].fluid} />
         );
       },
     },
