@@ -23,26 +23,36 @@ export const query = graphql`
       publishedDate(formatString: "MMMM Do, YYYY")
       body {
         raw
+        references {
+          file {
+            url
+          }
+        }
       }
     }
   }
 `;
 
 const Blog = props => {
-  // const data = JSON.parse(props.data.contentfulBlogPost.body.raw);
-  // data.content.forEach(item => {
-  //   if (item.nodeType === "embedded-asset-block") {
-  //     console.log(item.data.target.sys.id);
-
-  //   }
-  // });
-  // const options = {
-  //   renderNode: {
-  //     "embedded-asset-block": node => {
-  //       return <p>item</p>;
-  //     },
-  //   },
-  // };
+  var i = -1;
+  const options = {
+    renderNode: {
+      "embedded-asset-block": node => {
+        const id = node.data.target.sys.id;
+        console.log(id);
+        // props.data.contentfulBlogPost.body.references.forEach((reference) => {
+        //   if (reference.file.url === id)
+        // })
+        console.log(props.data.contentfulBlogPost.body.references[i]);
+        i++;
+        return (
+          <img
+            src={props.data.contentfulBlogPost.body.references[i].file.url}
+          />
+        );
+      },
+    },
+  };
   return (
     <Layout>
       <Head title={props.data.contentfulBlogPost.title} />
@@ -54,7 +64,8 @@ const Blog = props => {
       <h1>{props.data.contentfulBlogPost.title}</h1>
       <p>{props.data.contentfulBlogPost.publishedDate}</p>
       {documentToReactComponents(
-        JSON.parse(props.data.contentfulBlogPost.body.raw)
+        JSON.parse(props.data.contentfulBlogPost.body.raw),
+        options
       )}
     </Layout>
   );
